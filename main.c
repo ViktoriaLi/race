@@ -15,8 +15,10 @@
 
 void data_base(char *key, int lenk, char *value, int lenv, int i)
 {
-
-
+	printf("%s\n", key);
+	printf("%d\n", lenk);
+	printf("%s\n", value);
+	printf("%d\n", lenv);
 }
 
 int hash_func(char *string, int length)
@@ -24,10 +26,16 @@ int hash_func(char *string, int length)
 	int i;
 
 	i = 0;
-	while (length--)
-	{
-		i = i + (int)string[i];
-	}
+	if (length == 2)
+		while (length--)
+		{
+			i = i + (int)string[length];
+		}
+	else
+		while (length--)
+		{
+			i = i + ((int)string[length] * length);
+		}
 	i = i % 100;
 	return (i);
 }
@@ -41,11 +49,7 @@ int main(void)
 
 	while (get_line(0, &key, &lenk) && get_line(0, &value, &lenv))
 	{
-		printf("%s\n", key);
-		printf("%d\n", lenk);
-		printf("%s\n", value);
-		printf("%d\n", lenv);
-		if (key[0] != '\0')
+		if (lenk != 1)
 		{
 			printf("%d\n", hash_func(key, lenk));
 			data_base(key, lenk, value, lenv, hash_func(key, lenk));
