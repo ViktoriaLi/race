@@ -47,13 +47,24 @@ int main(void)
 	int lenk;
 	int lenv;
 
-	while (get_line(0, &key, &lenk) && get_line(0, &value, &lenv))
+	while (get_line(0, &key, &lenk) && get_line(0, &value, &lenv) && lenk != 1)
 	{
-		if (lenk != 1)
-		{
-			printf("%d\n", hash_func(key, lenk));
-			data_base(key, lenk, value, lenv, hash_func(key, lenk));
-		}
+		data_base(key, lenk, value, lenv, hash_func(key, lenk));
+		printf("%d\n", hash_func(key, lenk));
 		free(key);
+		free(value);
 	}
+	if (lenk == 1)
+	{
+		key = value;
+		lenk = lenv;
+		printf("%s%d\n", key, hash_func(key, lenk));
+		free(key);
+		while (get_line(0, &key, &lenk))
+		{
+			printf("%s%d\n", key, hash_func(key, lenk));
+			free(key);
+		}
+	}
+
 }
