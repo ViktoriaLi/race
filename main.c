@@ -13,22 +13,43 @@
 #include "hotrace.h"
 #include <stdio.h>
 
-void data_base(char *string, int length)
+void data_base(char *key, int lenk, char *value, int lenv, int i)
 {
 
 
 }
 
+int hash_func(char *string, int length)
+{
+	int i;
+
+	i = 0;
+	while (length--)
+	{
+		i = i + (int)string[i];
+	}
+	i = i % 100;
+	return (i);
+}
+
 int main(void)
 {
-	char *res;
-	int len;
+	char *key;
+	char *value;
+	int lenk;
+	int lenv;
 
-	while (get_line(0, &res, &len))
+	while (get_line(0, &key, &lenk) && get_line(0, &value, &lenv))
 	{
-		printf("%d\n", len);
-		printf("%s\n", res);
-		data_base(res, len);
-		free(res);
+		printf("%s\n", key);
+		printf("%d\n", lenk);
+		printf("%s\n", value);
+		printf("%d\n", lenv);
+		if (key[0] != '\0')
+		{
+			printf("%d\n", hash_func(key, lenk));
+			data_base(key, lenk, value, lenv, hash_func(key, lenk));
+		}
+		free(key);
 	}
 }
