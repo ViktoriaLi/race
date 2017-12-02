@@ -11,14 +11,19 @@
 /* ************************************************************************** */
 
 #include "hotrace.h"
-#include <stdio.h>
 
-void data_base(char *key, int lenk, char *value, int lenv, int i)
+void search(t_base *base, int i, char *key, int j)
 {
-	printf("%s\n", key);
-	printf("%d\n", lenk);
-	printf("%s\n", value);
-	printf("%d\n", lenv);
+	if (base[i].key)
+	{
+		write(1, base[i].value, (int)base[i].len - 1);
+		write(1, "\n", 1);
+	}
+	if (!base[i].key)
+	{
+		write(1, key, j);
+		write(1, " Not found.\n", 12);
+	}
 }
 
 int hash_func(char *string, int length)
@@ -40,31 +45,37 @@ int hash_func(char *string, int length)
 	return (i);
 }
 
+t_base *data_base(t_base *base, char *key, int lenk, char *value, int lenv)
+{
+	int i;
+
+	i = hash_func(key, lenk);
+	base[i].key = ft_memalloc(lenk);
+	base[i].key = key;
+	base[i].value = ft_memalloc(lenv);
+	base[i].value = value;
+	base[i].len = lenv;
+	return(base);
+}
+
 int main(void)
 {
 	char *key;
 	char *value;
 	int lenk;
 	int lenv;
+	t_base *base;
 
+	base = (t_base *)malloc(sizeof(t_base) * BASE_SIZE);
 	while (get_line(0, &key, &lenk) && get_line(0, &value, &lenv) && lenk != 1)
-	{
-		data_base(key, lenk, value, lenv, hash_func(key, lenk));
-		printf("%d\n", hash_func(key, lenk));
-		free(key);
-		free(value);
-	}
+		data_base(base, key, lenk, value, lenv);
 	if (lenk == 1)
 	{
 		key = value;
 		lenk = lenv;
-		printf("%s%d\n", key, hash_func(key, lenk));
-		free(key);
+		search(base, hash_func(key, lenk), key, lenk);
 		while (get_line(0, &key, &lenk))
-		{
-			printf("%s%d\n", key, hash_func(key, lenk));
-			free(key);
-		}
+			search(base, hash_func(key, lenk), key, lenk);
 	}
 
 }
