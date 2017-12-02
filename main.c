@@ -19,7 +19,7 @@ void search(t_base *base, int i, char *key, int j)
 		write(1, base[i].value, (int)base[i].len - 1);
 		write(1, "\n", 1);
 	}
-	if (!base[i].key)
+	else /*(!base[i].key)*/
 	{
 		write(1, key, j);
 		write(1, " Not found.\n", 12);
