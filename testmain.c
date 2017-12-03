@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "hotrace.h"
-#include <stdio.h>
 
 static int		search(t_base *base[], int i, unsigned char *key, int j)
 {
@@ -22,7 +21,7 @@ static int		search(t_base *base[], int i, unsigned char *key, int j)
 	{
 		if (ft_strcmp(it->key, key) == 0)
 		{
-			write(1, base[i]->value, (int)base[i]->len - 1);
+			write(1, it->value, (int)it->len);
 			write(1, "\n", 1);
 			return (0);
 		}
@@ -31,7 +30,7 @@ static int		search(t_base *base[], int i, unsigned char *key, int j)
 	if (!it)
 	{
 		write(1, key, j);
-		write(1, " Not found.\n", 12);
+		write(1, ": Not found.\n", 13);
 	}
 	return (0);
 }
@@ -55,7 +54,7 @@ static int		hash_func(unsigned char *string, int length)
 	return (i);
 }
 
-static t_base	**data_base(t_base *base[], unsigned char *key, int lenk, unsigned char *value, int lenv)
+static t_base	**data_base(t_base **base, unsigned char *key, int lenk, unsigned char *value, int lenv)
 {
 	int		i;
 	t_base	*new_node;
@@ -93,7 +92,7 @@ int				main(void)
 	t_base			*base[BASE_SIZE];
 
 	init_base(base);
-	while (get_line(0, &key, &lenk) && lenk != 1 && get_line(0, &value, &lenv))
+	while (get_line(0, &key, &lenk) & (lenk != 1) && get_line(0, &value, &lenv))
 		data_base(base, key, lenk, value, lenv);
 	if (lenk == 1)
 		while (get_line(0, &key, &lenk) && lenk != 1)
