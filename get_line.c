@@ -12,14 +12,23 @@
 
 #include "hotrace.h"
 
-int get_line(const int fd, char **dest, int *len)
+static void		to_end(unsigned char *buf, int i, unsigned char **dest,
+	int *len)
 {
-	int i;
-	int ret;
-	int k;
-	char *buf;
-	char *res;
-	char *tmp;
+	buf[i - 1] = 0;
+	*dest = ft_memalloc(i);
+	ft_memcpy(*dest, buf, i);
+	*len = i;
+	free(buf);
+}
+
+int				get_line(const int fd, unsigned char **dest, int *len)
+{
+	int				i;
+	int				ret;
+	int				k;
+	unsigned char	*buf;
+	unsigned char	*tmp;
 
 	i = 0;
 	k = 1;
@@ -28,21 +37,15 @@ int get_line(const int fd, char **dest, int *len)
 	while (buf[i - 1] != '\n' && ret == 1)
 	{
 		if (i == STR_SIZE * k)
-		{	
+		{
 			k *= 2;
 			tmp = ft_memalloc(STR_SIZE * k);
 			ft_memcpy(tmp, buf, i);
 			free(buf);
 			buf = tmp;
 		}
-		ret = read(fd, &buf[i], 1);
-		i++;
+		ret = read(fd, &buf[i++], 1);
 	}
-	buf[i - 1] = 0;
-	res = ft_memalloc(i);
-	ft_memcpy(res, buf, i);
-	*dest = res;
-	*len = i;
-	free(buf);
+	to_end(buf, i, dest, len);
 	return (ret);
 }

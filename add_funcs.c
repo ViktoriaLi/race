@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   add_funcs.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vlikhotk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/12/03 22:01:05 by vlikhotk          #+#    #+#             */
+/*   Updated: 2017/12/03 22:02:19 by vlikhotk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "hotrace.h"
 
-void		*ft_memalloc(size_t size)
+void			*ft_memalloc(size_t size)
 {
 	size_t			i;
 	unsigned char	*dest;
@@ -17,7 +29,7 @@ void		*ft_memalloc(size_t size)
 	return (dest);
 }
 
-void		*ft_memcpy(void *dst, const void *src, size_t n)
+void			*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t			i;
 	unsigned char	*d_temp;
@@ -67,4 +79,14 @@ unsigned char	*ft_strcpy(unsigned char *dst, unsigned char *src)
 	}
 	dst[i] = src[i];
 	return (dst);
+}
+
+int				ft_strlen(unsigned char *s)
+{
+	int i;
+
+	i = 0;
+	while (s[i] != 0)
+		i++;
+	return (i);
 }

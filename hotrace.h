@@ -25,7 +25,7 @@ typedef struct	s_base
 	unsigned char	*key;
 	unsigned char	*value;
 	int				len;
-	struct	s_base	*next;
+	struct s_base	*next;
 }				t_base;
 
 int				get_line(const int fd, unsigned char **dest, int *len);
@@ -33,5 +33,6 @@ void			*ft_memalloc(size_t size);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 unsigned char	*ft_strcpy(unsigned char *dst, unsigned char *src);
 int				ft_strcmp(unsigned char *s1, unsigned char *s2);
+int				ft_strlen(unsigned char *s);
 
 #endif
