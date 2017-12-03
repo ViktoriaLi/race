@@ -25,11 +25,14 @@ typedef struct	s_base
 	char *key;
 	char *value;
 	int	len;
+	struct	s_base *next;
 }				t_base;
+
 
 int 	get_line(const int fd, char **dest, int *len);
 void	*ft_memalloc(size_t size);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strcpy(char *dst, const char *src);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif
