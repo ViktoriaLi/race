@@ -6,17 +6,19 @@
 /*   By: vlikhotk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/02 12:31:39 by vlikhotk          #+#    #+#             */
-/*   Updated: 2017/12/02 12:31:43 by vlikhotk         ###   ########.fr       */
+/*   Updated: 2017/12/03 16:55:36 by vlikhotk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 #include <stdio.h>
 
-int search(t_base *base[], int i, char *key, int j)
+static int		search(t_base *base[], int i, unsigned char *key, int j)
 {
-	t_base *it = base[i];
-	while(it)
+	t_base *it;
+
+	it = base[i];
+	while (it)
 	{
 		if (ft_strcmp(it->key, key) == 0)
 		{
@@ -34,7 +36,7 @@ int search(t_base *base[], int i, char *key, int j)
 	return (0);
 }
 
-int hash_func(char *string, int length)
+static int		hash_func(unsigned char *string, int length)
 {
 	int i;
 
@@ -42,34 +44,35 @@ int hash_func(char *string, int length)
 	if (length == 2)
 		while (length--)
 		{
-			i = i + (int)string[length];
+			i = i + (int)string[length] * 17;
 		}
 	else
 		while (length--)
 		{
 			i = i + ((int)string[length] * length);
 		}
-	i = i % 100;
+	i = i % 101;
 	return (i);
 }
 
-t_base **data_base(t_base *base[], char *key, int lenk, char *value, int lenv)
+static t_base	**data_base(t_base *base[], unsigned char *key, int lenk, unsigned char *value, int lenv)
 {
-	int i;
+	int		i;
+	t_base	*new_node;
 
+	new_node = (t_base *)malloc(sizeof(*new_node));
 	i = hash_func(key, lenk);
-	t_base *new_node = malloc(sizeof *new_node);
 	new_node->key = malloc(lenk);
-    ft_strcpy(new_node->key, key);
-    new_node->value = malloc(lenk);
-    ft_strcpy(new_node->value, value);
-    new_node->len = lenv;
-    new_node->next = base[i];
-    base[i] = new_node;
-	return(base);
+	ft_strcpy(new_node->key, key);
+	new_node->value = malloc(lenk);
+	ft_strcpy(new_node->value, value);
+	new_node->len = lenv;
+	new_node->next = base[i];
+	base[i] = new_node;
+	return (base);
 }
 
-void init_base(t_base *base[])
+static void		init_base(t_base *base[])
 {
 	int i;
 
@@ -81,19 +84,20 @@ void init_base(t_base *base[])
 	}
 }
 
-int main(void)
+int				main(void)
 {
-	char *key;
-	char *value;
-	int lenk;
-	int lenv;
-	t_base *base[BASE_SIZE];
+	int				lenk;
+	int				lenv;
+	unsigned char	*key;
+	unsigned char	*value;
+	t_base			*base[BASE_SIZE];
 
 	init_base(base);
 	while (get_line(0, &key, &lenk) && lenk != 1 && get_line(0, &value, &lenv))
 		data_base(base, key, lenk, value, lenv);
 	if (lenk == 1)
-		while (get_line(0, &key, &lenk))
+		while (get_line(0, &key, &lenk) && lenk != 1)
 			search(base, hash_func(key, lenk), key, lenk);
+	if (lenk != 1)
 		search(base, hash_func(key, lenk), key, lenk);
 }
